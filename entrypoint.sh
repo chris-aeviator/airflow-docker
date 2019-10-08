@@ -23,6 +23,7 @@ if [[ $POSTGRES_ENABLED ]]; then
     wait_for_port "Postgres" "$POSTGRES_HOST" "$POSTGRES_PORT"
 fi
 
+sed "s/rbac = False/rbac = True/g" airflow.cfg
 # Task
 case "$1" in
   webserver)
