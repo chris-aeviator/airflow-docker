@@ -130,6 +130,7 @@ FROM airflow-rs as airflow-example-dags
 RUN set -ex \
     && mkdir -p ${AIRFLOW_HOME}/dags \
     && cd /usr/local/airflow/dags \
+    && curl -L -s -N https://git.tools.myzel.io/chris/example-dags/raw/master/example_airflow_operator.py -o example_papermill_executor.py \
     && curl -L -s -N https://github.com/apache/incubator-airflow/raw/master/airflow/contrib/example_dags/example_kubernetes_executor.py -o example_kubernetes_executor.py \
     && curl -L -s -N https://github.com/apache/incubator-airflow/raw/master/airflow/contrib/example_dags/example_kubernetes_operator.py -o example_kubernetes_operator.py \
     && curl -L -s -N https://github.com/apache/incubator-airflow/raw/master/airflow/example_dags/example_bash_operator.py -o example_bash_operator.py \
