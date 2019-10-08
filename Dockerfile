@@ -52,16 +52,13 @@ RUN set -ex \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
-    && if [ "$AIRFLOW_VERSION" = "master" ]; then\
-           pip3.6 install git+https://github.com/apache/incubator-airflow.git@master#egg=apache-airflow[crypto,postgres,hive,jdbc,kubernetes,async,hdfs,password,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}];\
-       elif [ "$AIRFLOW_VERSION" = "develop" ]; then\
-           pip3.6 install git+https://github.com/tekn0ir/incubator-airflow.git@patch_try_number#egg=apache-airflow[crypto,postgres,hive,jdbc,kubernetes,async,hdfs,password,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}];\
-       elif [ -n "$AIRFLOW_VERSION" ]; then\
-           pip3.6 install --no-cache-dir apache-airflow[crypto,postgres,hive,jdbc,kubernetes,async,hdfs,password,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==$AIRFLOW_VERSION;\
-       else\
-           pip3.6 install --no-cache-dir apache-airflow[crypto,postgres,hive,jdbc,kubernetes,async,hdfs,password,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}];\
-       fi\
-    && if [ -n "${PYTHON_DEPS}" ]; then pip install ${PYTHON_DEPS}; fi \
+    && git config --global user.name "John Doe" \
+    && git config --global user.email johndoe@example.com \
+    && git clone --branch 1.10.4 https://github.com/apache/airflow.git \
+    && cd airflow; git cherry-pick 0e2b02c; pip3.6 install git+https://github.com/apache/incubator-airflow.git@master#egg=apache-airflow[crypto,postgres,hive,jdbc,kubernetes,async,hdfs,password,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}];
+    
+
+    if [ -n "${PYTHON_DEPS}" ]; then pip install ${PYTHON_DEPS}; fi \
     && apt-get purge --auto-remove -yqq $buildDeps \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
